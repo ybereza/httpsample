@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                     mOutput.setText("");
                     mRequestTask = new HttpRequest(MainFragment.this).execute(
-                            isOverHTTPS() ? "https://ya.ru" : "http://ya.ru"
+                            isOverHTTPS() ? "https://mail.ru" : "http://mail.ru"
                     );
                 }
             });
@@ -306,6 +306,7 @@ public class MainActivity extends AppCompatActivity {
             os.flush();
             String output = readInputStream(is);
             is.close();
+            os.close();
             socket.close();
             return output;
         }
@@ -321,8 +322,10 @@ public class MainActivity extends AppCompatActivity {
             InputStream is = new BufferedInputStream(socket.getInputStream());
             OutputStream os = socket.getOutputStream();
             os.write(getRequestString(address));
+            os.flush();
             String output = readInputStream(is);
             is.close();
+            os.close();
             socket.close();
             return output;
         }
