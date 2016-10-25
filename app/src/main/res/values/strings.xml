@@ -10,4 +10,5 @@
     <string name="incorrect_url">Incorrect URL</string>
     <string name="error_connecting">Error connecting to resource</string>
     <string name="unknown_host">Unknown host</string>
+    <string name="error_timeout">Connection timeout</string>
 </resources>

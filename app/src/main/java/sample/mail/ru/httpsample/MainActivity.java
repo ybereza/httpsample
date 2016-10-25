@@ -31,6 +31,7 @@ import java.net.HttpURLConnection;
 import java.net.Inet4Address;
 import java.net.MalformedURLException;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.UnknownHostException;
@@ -215,6 +216,9 @@ public class MainActivity extends AppCompatActivity {
                     try {
                         connection = (HttpURLConnection)url.openConnection();
                         connection.setRequestMethod("GET");
+                        connection.setConnectTimeout(5000);
+                        connection.setReadTimeout(5000);
+                        connection.setInstanceFollowRedirects(true);
                         Map<String, List<String>> headers = connection.getHeaderFields();
                         InputStream is = new BufferedInputStream(connection.getInputStream());
                         String html = readInputStream(is);
@@ -228,6 +232,10 @@ public class MainActivity extends AppCompatActivity {
                         builder.append(html);
                         is.close();
                         return builder.toString();
+                    }
+                    catch (SocketTimeoutException ex) {
+                        ex.printStackTrace();
+                        mErrorStringID = R.string.error_timeout;
                     }
                     catch (IOException ex) {
                         ex.printStackTrace();
