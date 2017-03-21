@@ -25,8 +25,14 @@
             android:layout_weight="1"
             android:text="@string/socket"/>
     </LinearLayout>
-    <ScrollView
+    <Button
+        android:id="@+id/download_json"
         android:layout_below="@id/buttons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/download_json"/>
+    <ScrollView
+        android:layout_below="@id/download_json"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <TextView android:id="@+id/output" android:layout_width="match_parent"

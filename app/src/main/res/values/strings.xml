@@ -11,4 +11,7 @@
     <string name="error_connecting">Error connecting to resource</string>
     <string name="unknown_host">Unknown host</string>
     <string name="error_timeout">Connection timeout</string>
+    <string name="download_json">Download JSON</string>
+    <string name="server_error">Request returned with error code</string>
+    <string name="incorrect_json">Request returns incorrect json</string>
 </resources>
