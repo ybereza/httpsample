@@ -1,8 +1,10 @@
-package sample.mail.ru.httpsample
+package sample.mail.ru.httpsample.request
 
-import android.os.AsyncTask
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import sample.mail.ru.httpsample.R
+import sample.mail.ru.httpsample.asString
 
-import java.io.BufferedInputStream
 import java.io.IOException
 import java.net.Socket
 import java.net.UnknownHostException
@@ -13,28 +15,21 @@ import javax.net.ssl.SSLSocket
 import javax.net.ssl.SSLSocketFactory
 
 
-class SocketAsyncRequest(private val listener: (Pair<String, Int>) -> Unit) : AsyncTask<String, Int, Pair<String, Int>>() {
-
-    override fun doInBackground(vararg params: String): Pair<String, Int> {
-        if (params.size > 1) {
-            val address = params[0]
-            val port = Integer.valueOf(params[1])
-            return try {
-                when(port) {
-                    80 -> performDefaultConnection(address, port)
-                    443 -> performSecureConnection(address, port)
-                    else -> throw IOException()
-                }
-            } catch (ex: UnknownHostException) {
-                ex.printStackTrace()
-                Pair("", R.string.unknown_host)
-            } catch (ex: IOException) {
-                ex.printStackTrace()
-                Pair("", R.string.error_connecting)
+class SocketAsyncRequest (val address: String, val port : Int): RequestExecutor {
+    override suspend fun execute(): Pair<String, Int> = withContext(Dispatchers.IO) {
+        try {
+            when(port) {
+                80 -> performDefaultConnection(address, port)
+                443 -> performSecureConnection(address, port)
+                else -> throw IOException()
             }
-
+        } catch (ex: UnknownHostException) {
+            ex.printStackTrace()
+            Pair("", R.string.unknown_host)
+        } catch (ex: IOException) {
+            ex.printStackTrace()
+            Pair("", R.string.error_connecting)
         }
-        return Pair("", R.string.too_few_params)
     }
 
     private fun getRequestString(address: String): ByteArray {
@@ -68,11 +63,5 @@ class SocketAsyncRequest(private val listener: (Pair<String, Int>) -> Unit) : As
         os.close()
         socket.close()
         return Pair(output, 0)
-    }
-
-    override fun onPostExecute(data: Pair<String, Int>) {
-        if (!isCancelled) {
-            listener(data)
-        }
     }
 }

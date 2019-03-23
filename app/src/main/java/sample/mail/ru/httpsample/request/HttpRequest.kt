@@ -1,5 +1,8 @@
-package sample.mail.ru.httpsample
+package sample.mail.ru.httpsample.request
 
+import sample.mail.ru.httpsample.R
+import sample.mail.ru.httpsample.asString
+import sample.mail.ru.httpsample.join
 import java.io.IOException
 import java.net.HttpURLConnection
 import java.net.MalformedURLException
